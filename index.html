@@ -73,7 +73,8 @@
         /* Konteyner genel ayarları */
         .container {
             width: 100%;
-            max-width: 1200px;
+            max-width: 900px;
+            /* 1200px'den 900px'e çekildi (%70 görünümü için) */
             padding: 20px;
             text-align: center;
             position: relative;
@@ -101,7 +102,8 @@
 
         .splash-instruction {
             color: #fff;
-            font-size: 1.4rem;
+            font-size: 1.1rem;
+            /* Ölçülendirildi */
             text-align: center;
             max-width: 80%;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
@@ -111,11 +113,12 @@
         .heart-btn {
             background-color: #ffffff;
             color: #2d3436;
-            /* Daha koyu ve okunabilir bir ton */
             border: 2px solid var(--accent-color);
-            padding: 20px 40px;
+            padding: 15px 35px;
+            /* Küçültüldü */
             font-family: 'Dancing Script', cursive;
-            font-size: 2rem;
+            font-size: 1.6rem;
+            /* Küçültüldü */
             border-radius: 50px;
             cursor: pointer;
             box-shadow: 0 8px 20px rgba(214, 131, 163, 0.3);
@@ -158,19 +161,20 @@
 
         h1 {
             font-family: 'Dancing Script', cursive;
-            font-size: 3.5rem;
-            margin-bottom: 30px;
+            font-size: 2.5rem;
+            /* 3.5rem -> 2.5rem */
+            margin-bottom: 20px;
             color: var(--accent-color);
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-            /* Parlama efekti */
             line-height: 1.2;
         }
 
         /* Fotoğraf Çerçevesi - Dış çerçeve kaldırıldı, sadece resimde var */
         .photo-frame {
             width: 100%;
-            max-width: 350px;
-            margin: 0 auto 30px auto;
+            max-width: 300px;
+            /* 350px -> 300px */
+            margin: 0 auto 20px auto;
             transition: transform 0.5s ease;
 
             /* SLAYT İÇİN YENİ DÜZEN (Grid ile üst üste bindirme) */
@@ -222,12 +226,14 @@
 
         /* Yazı Alanı */
         .message-box {
-            font-size: 1.25rem;
-            /* Biraz büyütüldü (1.1rem -> 1.25rem) */
-            line-height: 1.8;
+            font-size: 1rem;
+            /* 1.25rem -> 1rem */
+            line-height: 1.7;
+            /* 1.8 -> 1.7 */
             color: #ddd;
             /* Okunabilir açık gri */
-            margin-bottom: 40px;
+            margin-bottom: 30px;
+            /* 40px -> 30px */
             font-weight: 400;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
             /* Koyu arkaplanda metin gölgesi */
@@ -235,9 +241,10 @@
 
         .signature {
             font-family: 'Dancing Script', cursive;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
+            /* 1.8rem -> 1.5rem */
             color: var(--accent-color);
-            margin-top: 20px;
+            margin-top: 15px;
             opacity: 0.8;
         }
 
@@ -294,8 +301,8 @@
                 justify-content: space-between;
                 text-align: left;
                 /* Yazıları sola yasla */
-                padding: 50px;
-                gap: 40px;
+                padding: 40px;
+                gap: 30px;
                 /* Ara boşluk */
             }
 
@@ -320,12 +327,12 @@
             }
 
             h1 {
-                font-size: 3rem;
-                margin-bottom: 20px;
+                font-size: 2.5rem;
+                margin-bottom: 15px;
             }
 
             .message-box {
-                font-size: 1.25rem;
+                font-size: 1rem;
             }
 
             .signature {
