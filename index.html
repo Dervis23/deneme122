@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sana Özel...</title>
+    <!-- Google Fonts import -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:wght@300;400;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* 
+           VİBE ve ESTETİK AYARLARI
+           -----------------------
+           - Renk Paleti: Sıcak krem, şeftali ve pembe tonları.
+           - Yazı Tipleri: Başlıklar için Dancing Script, Metinler için Montserrat.
+        */
+        :root {
+            /* YENİ YIL TEMASI: Büyülü Kış Akşamı */
+            --bg-gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #2b32b2 100%);
+            /* Daha derin ama yumuşak mavi tonları */
+
+            --text-color: #ffffff;
+            --accent-color: #ffd1dc;
+            /* Pastel Pembe/Gold karışımı */
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+
+            /* 
+                ARKAPLAN RESMİ EKLEME YÖNERGESİ:
+                1. İstediğin bir fotoğrafı proje klasörüne at (Örn: wallpaper.jpg)
+                2. Aşağıdaki 'background-image' satırını düzenle:
+                   url('wallpaper.jpg') kısmına kendi dosya adını yaz.
+                Not: Yazıların okunabilir olması için resmin üzerinde koyu bir perde (gradient) bıraktık.
+            */
+            background-image:
+                linear-gradient(rgba(20, 30, 60, 0.7), rgba(20, 30, 60, 0.8)),
+                /* Karartma katmanı */
+                url('wallpaper.jpg'),
+                /* Buraya resim dosyasının adını yaz */
+                var(--bg-gradient);
+            /* Resim yoksa bu renk geçerli olur */
+
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            /* Resim sabit kalır, içerik kayar */
+
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            /* Sadece yatay scrollu engelle */
+            transition: background 1s ease;
+        }
+
+        /* Konteyner genel ayarları */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        /* 
+           AŞAMA 1: KARŞILAMA EKRANI 
+        */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            /* İçerikleri alt alta diz */
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            transition: opacity 1.5s ease, visibility 1.5s ease;
+            gap: 20px;
+            /* Buton ve yazı arası boşluk */
+        }
+
+        .splash-instruction {
+            color: #fff;
+            font-size: 1.4rem;
+            text-align: center;
+            max-width: 80%;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 2s ease;
+        }
+
+        .heart-btn {
+            background-color: #ffffff;
+            color: #2d3436;
+            /* Daha koyu ve okunabilir bir ton */
+            border: 2px solid var(--accent-color);
+            padding: 20px 40px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(214, 131, 163, 0.3);
+            transition: all 0.4s ease;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+            animation: pulse-soft 2s infinite;
+        }
+
+        .heart-btn:hover {
+            background-color: var(--accent-color);
+            color: white;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 25px rgba(214, 131, 163, 0.5);
+        }
+
+        /* 
+           AŞAMA 2: ANA İÇERİK 
+        */
+        #main-content {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(30px);
+            transition: all 2s ease;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+            margin: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        #main-content.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 30px;
+            color: var(--accent-color);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+            /* Parlama efekti */
+            line-height: 1.2;
+        }
+
+        /* Fotoğraf Çerçevesi - Dış çerçeve kaldırıldı, sadece resimde var */
+        .photo-frame {
+            width: 100%;
+            max-width: 350px;
+            margin: 0 auto 30px auto;
+            transition: transform 0.5s ease;
+
+            /* SLAYT İÇİN YENİ DÜZEN (Grid ile üst üste bindirme) */
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr;
+            /* Üst üste bindirmek için */
+            place-items: center;
+            /* Resimleri her zaman ortalar */
+
+            /* Kapsayıcı sadece yer tutucu olsun */
+            height: auto;
+            min-height: 400px;
+        }
+
+        /* Hover efekte container üzerinden eriştik ama image etkilenecek */
+        .photo-frame:hover img {
+            transform: scale(1.02);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .photo-frame img {
+            /* Dinamik boyutlandırma: Resim kendi oranını korur */
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 60vh;
+            /* Ekranı dikeyde çok kaplamasın */
+
+            display: block;
+            border-radius: 4px;
+
+            /* DEKORATİF ÇERÇEVE - ARTIK RESMİN KENDİSİNDE */
+            border: 12px solid #fff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+
+            /* Slayt pozisyonlama */
+            grid-column: 1;
+            grid-row: 1;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        /* Aktif olan fotoğraf görünür */
+        .photo-frame img.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        /* Yazı Alanı */
+        .message-box {
+            font-size: 1.25rem;
+            /* Biraz büyütüldü (1.1rem -> 1.25rem) */
+            line-height: 1.8;
+            color: #ddd;
+            /* Okunabilir açık gri */
+            margin-bottom: 40px;
+            font-weight: 400;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+            /* Koyu arkaplanda metin gölgesi */
+        }
+
+        .signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            margin-top: 20px;
+            opacity: 0.8;
+        }
+
+        /* Animasyonlar */
+        @keyframes pulse-soft {
+            0% {
+                box-shadow: 0 0 0 0 rgba(214, 131, 163, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 20px rgba(214, 131, 163, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(214, 131, 163, 0);
+            }
+        }
+
+        /* Mobil Uyumluluk */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+                margin-bottom: 20px;
+            }
+
+            #main-content {
+                padding: 25px 15px;
+                margin: 10px;
+            }
+
+            .message-box {
+                font-size: 1.0rem;
+                line-height: 1.6;
+            }
+
+            /* Mobilde ideal okuma boyutu */
+            .heart-btn {
+                font-size: 1.3rem;
+                padding: 15px 30px;
+                width: 80%;
+            }
+
+            /* Butonu mobilde daha rahat tıklanır yap */
+        }
+
+        /* MASAÜSTÜ İÇİN YATAY DÜZEN (768px'den büyükse) */
+        @media (min-width: 769px) {
+            #main-content {
+                display: flex;
+                /* Yanyana diz */
+                flex-direction: row;
+                align-items: center;
+                /* Dikey ortala */
+                justify-content: space-between;
+                text-align: left;
+                /* Yazıları sola yasla */
+                padding: 50px;
+                gap: 40px;
+                /* Ara boşluk */
+            }
+
+            .photo-frame {
+                flex: 1.2;
+                /* Fotoğraf alanı biraz daha geniş olabilir */
+                max-width: 50%;
+                margin: 0;
+                /* Mobildeki margin'i sıfırla */
+                /* Masaüstünde hafif döndürme efekti geri gelsin */
+                transform: rotate(-2deg);
+            }
+
+            .photo-frame:hover {
+                transform: rotate(0deg) scale(1.02);
+            }
+
+            /* Sağ taraftaki metin alanı */
+            .content-wrapper {
+                flex: 1;
+                padding-left: 20px;
+            }
+
+            h1 {
+                font-size: 3rem;
+                margin-bottom: 20px;
+            }
+
+            .message-box {
+                font-size: 1.25rem;
+            }
+
+            .signature {
+                margin-top: 30px;
+                text-align: right;
+            }
+        }
+
+        /* SNOWFALL (Kar Yağışı) */
+        #snow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            /* Tıklamayı engellemesin */
+            z-index: 1;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: #fff;
+            font-size: 1em;
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- KAR YAĞIŞI EFEKTİ İÇİN KONTEYNER -->
+    <div id="snow-container"></div>
+
+    <!-- 
+        MÜZİK ETİKETİ 
+        Not: Bu dosyanın çalıştığı klasörde 'muzik.mp3' olmalı.
+        Loop: Şarkı bitince başa sarar.
+    -->
+    <audio id="bg-music" loop>
+        <!-- AŞAĞIDAKİ DOSYA YOLUNU KENDİ MÜZİK DOSYANA GÖRE DEĞİŞTİREBİLİRSİN -->
+        <source src="muzik.mp3" type="audio/mpeg">
+        Tarayıcın ses elementini desteklemiyor.
+    </audio>
+
+    <!-- AŞAMA 1: GİRİŞ BUTONU -->
+    <div id="splash-screen">
+        <p class="splash-instruction">
+            Daha iyi bir deneyim için lütfen sesi açın ve <strong>F11</strong> ile tam ekran yapın. 🎧✨
+        </p>
+        <button id="start-btn" class="heart-btn">
+            Sürprizi Başlat ❤️🌼
+        </button>
+    </div>
+
+    <!-- Müzik Manuel Başlatma Butonu (Hata durumunda görünür) -->
+    <button id="music-fallback-btn"
+        style="display:none; position:fixed; bottom:20px; right:20px; z-index:100; background:rgba(255,255,255,0.8); border:none; border-radius:50%; width:50px; height:50px; font-size:24px; box-shadow:0 4px 10px rgba(0,0,0,0.2); cursor:pointer;">
+        🎵
+    </button>
+
+    <!-- AŞAMA 2: İÇERİK -->
+    <div class="container">
+        <div id="main-content">
+            <!-- BAŞLIK (Mobilde yukarıda kalsın diye structur dışına almadık, CSS ile gizleyip göstereceğiz veya wrapper içine taşıdık) -->
+            <!-- NOT: Masaüstü tasarımda başlık sağa geçti. Structure'ı CSS ile yönettik. -->
+
+            <!-- FOTOĞRAF ALANI (SLAYT) -->
+            <div class="photo-frame">
+                <!-- 
+                    FOTOĞRAF EKLEMEK İÇİN YÖNERGE:
+                    1. Yeni fotoğrafını klasöre at (Örn: foto2.jpg).
+                    2. Aşağıdaki satırı kopyala ve altına yapıştır.
+                    3. 'src' kısmına yeni dosya adını yaz.
+                    4. Sadece İLK fotoğrafta class="active" kalsın, diğerlerinden sil.
+                -->
+
+                <!-- 1. Fotoğraf (Başlangıçta görünür) -->
+
+
+                <!-- 2. Fotoğraf (Örnek) - Dosya varsa otomatik döner -->
+                <img src="foto1.jpg" alt="Fotoğraf 1">
+                <img src="foto2.jpg" alt="Fotoğraf 2">
+
+                <!-- 3. Fotoğraf (Örnek) -->
+                <img src="foto3.jpg" alt="Fotoğraf 3">
+                <img src="foto4.jpg" alt="Fotoğraf 4">
+                <img src="foto5.jpg" alt="Fotoğraf 5">
+                <img src="foto6.jpg" alt="Fotoğraf 6">
+                <img src="foto7.jpg" alt="Fotoğraf 7">
+                <img src="foto8.jpg" alt="Fotoğraf 8">
+                <img src="foto9.jpg" alt="Fotoğraf 9">
+                <img src="foto10.jpg" alt="Fotoğraf 10">
+                <img src="foto11.jpg" alt="Fotoğraf 11">
+                <img src="foto12.jpg" alt="Fotoğraf 12">
+                <img src="foto13.jpg" alt="Fotoğraf 13">
+                <img src="foto14.jpg" alt="Fotoğraf 14">
+
+            </div>
+
+            <!-- SAĞ TARAFTAKİ METİN ALANI -->
+            <div class="content-wrapper">
+                <!-- BAŞLIK -->
+                <h1>Seninle Her Anım Özel</h1>
+
+                <!-- DUYGUSAL METİN -->
+                <div class="message-box">
+                    <!-- BURAYA KENDİ MESAJKINI YAZACAKSIN -->
+                    <p>
+                        Seninle geçen her dakikam hayatımın en güzel anlarından.
+                        Umarım ki önümüzdeki bu yıllar da böyle güzel anılar biriktirmek için fırsatlar verir bize.
+                        Seni kelimelerin anlatabileceğinden çok daha fazla seviyorum.
+                    </p>
+                    <br>
+                    <p>İyi ki varsın, iyi ki benimlesin...</p>
+                </div>
+
+                <!-- İMZA -->
+                <div class="signature">
+                    Mutlu yıllar Meryem'im
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sayfa yüklendiğinde butonları tanımla
+        document.addEventListener('DOMContentLoaded', () => {
+            const startBtn = document.getElementById('start-btn');
+            const fallbackBtn = document.getElementById('music-fallback-btn');
+
+            // Ana başlatma butonuna dinleyici ekle (onclick attribute yerine)
+            if (startBtn) {
+                startBtn.addEventListener('click', startJourney);
+            }
+
+            // Fallback butonuna da dinleyici ekle
+            if (fallbackBtn) {
+                fallbackBtn.addEventListener('click', () => {
+                    const music = document.getElementById('bg-music');
+                    music.play().then(() => {
+                        fallbackBtn.style.display = 'none'; // Başarılıysa gizle
+                    }).catch(console.error);
+                });
+            }
+        });
+
+        function startJourney() {
+            var music = document.getElementById('bg-music');
+            var splash = document.getElementById('splash-screen');
+            var content = document.getElementById('main-content');
+            var fallbackBtn = document.getElementById('music-fallback-btn');
+
+            // 1. Müziği Başlat
+            // Ses ayarını güvenli yap (bazı mobillerde hata verebilir)
+            try { music.volume = 0.2; } catch (e) { console.log("Ses ayarı yapılamadı (Mobil kısıtlaması olabilir)"); }
+
+            // Promise yapısıyla oynatmayı dene
+            var playPromise = music.play();
+
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    console.log("Müzik başarıyla başladı.");
+                })
+                    .catch(error => {
+                        console.log("Otomatik oynatma engellendi, manuel buton gösteriliyor.", error);
+                        // Hata olursa sağ altta küçük bir müzik butonu çıkar
+                        if (fallbackBtn) fallbackBtn.style.display = 'block';
+                    });
+            }
+
+            // 2. Giriş ekranını gizle
+            splash.style.opacity = '0';
+            splash.style.visibility = 'hidden';
+
+            // 3. İçeriği göster
+            setTimeout(() => {
+                content.classList.add('visible');
+                startSlideshow(); // İçerik gelince slaytı başlat
+            }, 500);
+        }
+
+        // Slayt Gösterisi Fonksiyonu
+        // Slayt Gösterisi Fonksiyonu
+        function startSlideshow() {
+            const slides = document.querySelectorAll('.photo-frame img');
+            if (slides.length === 0) return;
+
+            // İlk resmi hemen görünür yap (Gecikmeyi önlemek için)
+            slides[0].classList.add('active');
+
+            if (slides.length <= 1) return; // Tek resim varsa döngüye girmesin
+
+            let currentSlide = 0;
+
+            setInterval(() => {
+                // Mevcut olandan active sınıfını al
+                slides[currentSlide].classList.remove('active');
+
+                // Bir sonrakine geç (sonuncudaysa başa dön)
+                currentSlide = (currentSlide + 1) % slides.length;
+
+                // Yeni olana active sınıfını ver
+                slides[currentSlide].classList.add('active');
+            }, 3500); // 3.5 saniyede bir değişir
+        }
+
+        // KAR YAĞIŞI EFEKTİ
+        function createSnowflakes() {
+            const snowContainer = document.getElementById('snow-container');
+            const snowflakeCount = 50; // Kar tanesi sayısı
+
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                snowflake.innerHTML = '❄'; // Kar tanesi sembolü
+
+                // Rastgele pozisyon ve süreler
+                snowflake.style.left = Math.random() * 100 + 'vw';
+                snowflake.style.animationDuration = Math.random() * 3 + 2 + 's'; // 2-5 saniye
+                snowflake.style.fontSize = Math.random() * 10 + 10 + 'px'; // 10-20px
+                snowflake.style.animationDelay = Math.random() * 5 + 's';
+
+                snowContainer.appendChild(snowflake);
+            }
+        }
+
+        // Sayfa yüklenince kar yağışını başlat
+        createSnowflakes();
+    </script>
+
+
+
+</body>
+
+</html>
