@@ -1,1 +1,1 @@
-bu site meryeme hediyemdir
+Bu site Meryem'e hediyemdir.
